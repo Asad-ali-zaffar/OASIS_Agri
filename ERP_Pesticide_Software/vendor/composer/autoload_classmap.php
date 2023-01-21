@@ -6,10 +6,12 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Charts\\MonthlyCustomerChart' => $baseDir . '/app/Charts/MonthlyCustomerChart.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Admin\\BuyPoliciesController' => $baseDir . '/app/Http/Controllers/Admin/BuyPoliciesController.php',
     'App\\Http\\Controllers\\Admin\\CustomerRegisterationController' => $baseDir . '/app/Http/Controllers/Admin/CustomerRegisterationController.php',
+    'App\\Http\\Controllers\\Admin\\DashboardController' => $baseDir . '/app/Http/Controllers/Admin/DashboardController.php',
     'App\\Http\\Controllers\\Admin\\EmployeesRegistrationController' => $baseDir . '/app/Http/Controllers/Admin/EmployeesRegistrationController.php',
     'App\\Http\\Controllers\\Admin\\ExpenseController' => $baseDir . '/app/Http/Controllers/Admin/ExpenseController.php',
     'App\\Http\\Controllers\\Admin\\InvoiceController' => $baseDir . '/app/Http/Controllers/Admin/InvoiceController.php',

@@ -525,10 +525,12 @@ class ComposerStaticInit8c599ab570e7ed6a311c3d207c31f77b
     );
 
     public static $classMap = array (
+        'App\\Charts\\MonthlyCustomerChart' => __DIR__ . '/../..' . '/app/Charts/MonthlyCustomerChart.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Admin\\BuyPoliciesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BuyPoliciesController.php',
         'App\\Http\\Controllers\\Admin\\CustomerRegisterationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CustomerRegisterationController.php',
+        'App\\Http\\Controllers\\Admin\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/DashboardController.php',
         'App\\Http\\Controllers\\Admin\\EmployeesRegistrationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/EmployeesRegistrationController.php',
         'App\\Http\\Controllers\\Admin\\ExpenseController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ExpenseController.php',
         'App\\Http\\Controllers\\Admin\\InvoiceController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/InvoiceController.php',

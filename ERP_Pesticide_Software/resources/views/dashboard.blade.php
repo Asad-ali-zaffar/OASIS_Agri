@@ -146,171 +146,41 @@
                         class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
-        <!-- today statistics -->
         <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-olive color-palette">
-                <span class="info-box-icon">
-                    <i class="fas fa-money-bill-wave"></i>
-                </span>
+            {!! $productchart->container() !!}
 
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ __('Income amount') }}</span>
-                    <span class="info-box-number">
-                        {{-- @dd($data['Sale']) --}}
-                        @php
-                            $sale_sum=0;
-                            foreach($data['Sale'] as $value){
-                                $sale_sum+=$value->total_bill;
-                            }
-                        @endphp
-                        {{$sale_sum}}.00
-                    </span>
-                </div>
-            </div>
+            <script src="{{ $productchart->cdn() }}"></script>
+
+            {{ $productchart->script() }}
         </div>
         <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-olive color-palette">
-                <span class="info-box-icon">
-                    <i class="fas fa-money-bill-wave"></i>
-                </span>
+            {!! $empchart->container() !!}
 
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ __('Expense amount') }}</span>
-                    <span class="info-box-number">
-                        {{-- @dd($data['Expense'] ) --}}
-                        @php
-                            $expense_sum=0;
-                            foreach($data['Expense'] as $value){
-                                $expense_sum+=$value->total_expense;
-                            }
-                        @endphp
-                        {{$expense_sum}}.00
-                        {{-- {{$today_total_expense}} {{get_currency()}} --}}
-                    </span>
-                </div>
-            </div>
+            <script src="{{ $empchart->cdn() }}"></script>
+
+            {{ $empchart->script() }}
         </div>
         <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-olive color-palette">
-                <span class="info-box-icon">
-                    <i class="fas fa-money-bill-wave"></i>
-                </span>
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ __('Remove expence amount') }}</span>
-                    <span class="info-box-number">
-                        {{$sale_sum-$expense_sum}}.00
-                    </span>
-                </div>
-            </div>
-        </div>
-        <!-- /today statistics -->
+            {!! $coustomerchart->container() !!}
 
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-primary">
-                <span class="info-box-icon"><i class="fa fa-list"></i></span>
+            <script src="{{ $coustomerchart->cdn() }}"></script>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ __('Returned Product Amount') }}</span>
-                    <span class="info-box-number">
-                         {{-- @dd($data['ReturnedProduct']) --}}
-                        @php
-                        $ReturnedProduct_sum=0;
-                        foreach($data['ReturnedProduct'] as $value){
-                            $ReturnedProduct_sum+=$value->total_bill;
-                        }
-                    @endphp
-                    {{$ReturnedProduct_sum}}.00
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
+            {{ $coustomerchart->script() }}
         </div>
         <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-warning">
-                <span class="info-box-icon"><i class="fa fa-pause-circle"></i></span>
+            {!! $salechart->container() !!}
 
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ __('Remove expence amount') }}</span>
-                    <span class="info-box-number">
-                        {{$sale_sum-$expense_sum}}.00
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
+            <script src="{{ $salechart->cdn() }}"></script>
+
+            {{ $salechart->script() }}
         </div>
         <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-success">
-                <span class="info-box-icon"><i class="fa fa-check-double"></i></span>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ __('Remove return Amount') }}</span>
-                    <span class="info-box-number">
-                        {{($sale_sum-$expense_sum)-$ReturnedProduct_sum}}.00
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-primary">
-                <span class="info-box-icon"><i class="fa fa-list"></i></span>
+            {!! $purchasechart->container() !!}
 
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ __('Salary & Pay') }}</span>
-                    <span class="info-box-number">
-                        {{-- @dd($data['SalaryPay']) --}}
-                        @php
-                        $SalaryPay_sum=0;
-                        foreach($data['SalaryPay'] as $value){
-                            $SalaryPay_sum+=$value->total_amount;
-                        }
-//                    @endphp
-                    {{$SalaryPay_sum}}.00
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-warning">
-                <span class="info-box-icon"><i class="fa fa-pause-circle"></i></span>
+            <script src="{{ $purchasechart->cdn() }}"></script>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ __('Remove return amount') }}</span>
-                    <span class="info-box-number">
-                        {{($sale_sum-$expense_sum)-$ReturnedProduct_sum}}.00
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-success">
-                <span class="info-box-icon"><i class="fa fa-check-double"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ __('Profit Amount') }}</span>
-                    <span class="info-box-number">
-                        {{(($sale_sum-$expense_sum)-$ReturnedProduct_sum)-$SalaryPay_sum}}.00
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <div class="col-md-4 col-sm-6 col-12">
-{{--@dd($data['chart'])--}}
-{{--            {!! $data['chart']->container() !!}--}}
-
-{{--     <script src="{{ $data['chart']->cdn() }}"></script>--}}
-
-{{--     {{ $data['chart']->script() }}--}}
+            {{ $purchasechart->script() }}
             <!-- /.info-box -->
         </div>
     </div>

