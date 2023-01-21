@@ -121,9 +121,10 @@ class SalaryPayController extends Controller
      * @param  \App\Models\SalaryPay  $salaryPay
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SalaryPay $salaryPay)
+    public function print(SalaryPay $salaryPayID)
     {
-        //
+        $data['recorde']=$salaryPayID;
+        return view('admin.salary_pays._payinvoice',$data);
     }
 
     /**

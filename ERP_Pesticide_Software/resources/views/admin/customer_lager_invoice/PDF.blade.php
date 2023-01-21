@@ -134,13 +134,14 @@
                                     $q=0;
                                     $t=0;
                                     $index=0;
+                                    $total=0;
                                 @endphp
                                 @foreach ($stock as $key=>$value)
                                     <tr class="border">
                                         <td>{{ $value['product_id'] }}</td>
                                         <td>{{ $value['policy_name'] }}</td>
                                         <td>{{ $value['product_quantity'] }}</td>
-                                        <td>{{ number_format($value['product_seal_price']) }}</td>
+                                        <td>{{ number_format($value['product_Sale_price']) }}</td>
                                         {{-- <td>{{ $value['created_at'] }}</td>
                                         <td>{{ $value['return_date'] }}</td>
                                         <td>{{ $value['return_product_quantity'] }}</td>
@@ -151,8 +152,10 @@
                                             $q+=$value['total_quantity'];
                                             $t+= $value['bill'];
                                             $index=$key;
+                                            $total+=$value['product_Sale_price']*$value['total_quantity'];
                                         @endphp
-                                        <td>{{ number_format($value['bill'] )}}</td>
+                                        {{-- <td>{{ number_format($value['bill'] )}}</td> --}}
+                                        <td>{{ number_format($value['product_Sale_price']*$value['total_quantity'])}}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -161,7 +164,8 @@
                    <hr class="col-12" style="margin-top: 10vh">
                     <p class="col-3"><b>Total :</b></p>
                     <p class="col-5 text-center">{{__($q)}}</p>
-                    <p class="col-3 text-center"> {{__(number_format($stock[$index]['totalamount']))}}</p>
+                    <p class="col-3 text-center"> {{__(number_format($total))}}</p>
+                    {{-- <p class="col-3 text-center"> {{__(number_format($stock[$index]['totalamount']))}}</p> --}}
                     <hr class="col-12">
                 </div>
             </div>
@@ -175,9 +179,10 @@
                         </p>
                     </div>
                     <hr class="col-12" style="margin-bottom: 4vh">
-                    <p class="col-12 text-left"><b>Total Amount: </b>{{__(number_format($stock[$index]['totalamount']))}}</p>
-                    <p class="col-12 text-left"><b>Deposited: </b>{{__(number_format($stock[$index]['advance_amount']))}}</p>
-                    <p class="col-12 text-left" style="margin-bottom: 10vh"><b>Remaining: </b>{{__(number_format($stock[$index]['totalamount']-$stock[$index]['advance_amount']))}}</p>
+                    <p class="col-12 text-left"><b>Total Amount: </b>{{__(number_format($total))}}</p>
+                    {{-- <p class="col-12 text-left"><b>Total Amount: </b>{{__(number_format($stock[$index]['totalamount']))}}</p> --}}
+                    <p class="col-12 text-left"><b>Deposited: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__(number_format($stock[$index]['advance_amount']))}}</p>
+                    <p class="col-12 text-left" style="margin-bottom: 10vh"><b>Remaining: </b>&nbsp;&nbsp;&nbsp;{{__(number_format($total-$stock[$index]['advance_amount']))}}</p>
 
                     <div class="col-3 text-center">
                         <hr>

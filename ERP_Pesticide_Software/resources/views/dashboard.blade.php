@@ -69,14 +69,14 @@
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>
-                        {{ count($data['Seal']) }}
+                        {{ count($data['Sale']) }}
                     </h3>
                     <p>{{ __('Sales') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-capsules"></i>
                 </div>
-                <a href="{{ route('admin.Sale.index') }}" class="small-box-footer">{{ __('More info') }} <i
+                <a href="{{ route('admin.sale.index') }}" class="small-box-footer">{{ __('More info') }} <i
                         class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
@@ -97,7 +97,7 @@
                         class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <div class="col-lg-2 col-6">
+        {{-- <div class="col-lg-2 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
@@ -107,13 +107,12 @@
                     <p>{{ __('Expense') }}</p>
                 </div>
                 <div class="icon">
-                    {{-- <i class="fa fa-home"></i> --}}
                     <i class="fas fa-money-bill-wave-alt    "></i>
                 </div>
                 <a href="{{ route('admin.expenses.index') }}" class="small-box-footer">{{ __('More info') }} <i
                         class="fas fa-arrow-circle-right"></i></a>
             </div>
-        </div>
+        </div> --}}
         <div class="col-lg-2 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
@@ -158,10 +157,10 @@
                 <div class="info-box-content">
                     <span class="info-box-text">{{ __('Income amount') }}</span>
                     <span class="info-box-number">
-                        {{-- @dd($data['Seal']) --}}
+                        {{-- @dd($data['Sale']) --}}
                         @php
                             $sale_sum=0;
-                            foreach($data['Seal'] as $value){
+                            foreach($data['Sale'] as $value){
                                 $sale_sum+=$value->total_bill;
                             }
                         @endphp
@@ -269,7 +268,7 @@
                         foreach($data['SalaryPay'] as $value){
                             $SalaryPay_sum+=$value->total_amount;
                         }
-                    @endphp
+//                    @endphp
                     {{$SalaryPay_sum}}.00
                     </span>
                 </div>
@@ -303,6 +302,15 @@
                 </div>
                 <!-- /.info-box-content -->
             </div>
+            <!-- /.info-box -->
+        </div>
+        <div class="col-md-4 col-sm-6 col-12">
+{{--@dd($data['chart'])--}}
+{{--            {!! $data['chart']->container() !!}--}}
+
+{{--     <script src="{{ $data['chart']->cdn() }}"></script>--}}
+
+{{--     {{ $data['chart']->script() }}--}}
             <!-- /.info-box -->
         </div>
     </div>

@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "arielmejiadev/larapex-charts": "^5.2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/breeze": "^1.14",
         "laravel/framework": "^9.19",
@@ -27,7 +28,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

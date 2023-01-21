@@ -637,7 +637,7 @@ class GeneratedExtensionToMimeTypeMap implements ExtensionToMimeTypeMap
         'nlu' => 'application/vnd.neurolanguage.nlu',
         'nml' => 'application/vnd.enliven',
         'nnd' => 'application/vnd.noblenet-directory',
-        'nns' => 'application/vnd.noblenet-sealer',
+        'nns' => 'application/vnd.noblenet-Saleer',
         'nnw' => 'application/vnd.noblenet-web',
         'npx' => 'image/vnd.net-fpx',
         'nq' => 'application/n-quads',

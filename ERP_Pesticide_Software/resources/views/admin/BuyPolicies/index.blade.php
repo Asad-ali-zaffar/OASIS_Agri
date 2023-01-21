@@ -410,7 +410,7 @@
                 $("#product_quantity").attr("readonly", false);
                 $.ajax({
                     type: "get",
-                    url: "{{ route('admin.Sale.show') }}",
+                    url: "{{ route('admin.sale.show') }}",
                     data: {
                         id: id
                     },

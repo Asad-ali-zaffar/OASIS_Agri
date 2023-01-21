@@ -1,5 +1,9 @@
-@if ($patient['status'] == 'Not Available')
-    <div class="text-center  btn btn-danger"> {{ $patient['status'] }} </div>
+
+@if (get_countQuantity($patient['id']) <= 0)
+    <div class="text-center  btn btn-danger"> Not Available  </div>
 @else
-    <div class="text-center  btn btn-info"> {{ $patient['status'] }} </div>
+    <div class="text-center  btn btn-info"> Available </div>
 @endif
+
+
+                                         

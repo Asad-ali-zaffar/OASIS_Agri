@@ -5034,8 +5034,8 @@ var widgetsMenu = $.widget( "ui.menu", {
 					null, "ui-state-active" );
 				this.focus( event, target );
 			},
-			mouseleave: "collapseAll",
-			"mouseleave .ui-menu": "collapseAll",
+			mouseleave: "collapSalel",
+			"mouseleave .ui-menu": "collapSalel",
 			focus: function( event, keepActiveItem ) {
 
 				// If there's already an active item, keep it active
@@ -5053,7 +5053,7 @@ var widgetsMenu = $.widget( "ui.menu", {
 						$.ui.safeActiveElement( this.document[ 0 ] )
 					);
 					if ( notContained ) {
-						this.collapseAll( event );
+						this.collapSalel( event );
 					}
 				} );
 			},
@@ -5066,7 +5066,7 @@ var widgetsMenu = $.widget( "ui.menu", {
 		this._on( this.document, {
 			click: function( event ) {
 				if ( this._closeOnDocumentClick( event ) ) {
-					this.collapseAll( event );
+					this.collapSalel( event );
 				}
 
 				// Reset the mouseHandled flag
@@ -5384,7 +5384,7 @@ var widgetsMenu = $.widget( "ui.menu", {
 			.position( position );
 	},
 
-	collapseAll: function( event, all ) {
+	collapSalel: function( event, all ) {
 		clearTimeout( this.timer );
 		this.timer = this._delay( function() {
 
@@ -5553,7 +5553,7 @@ var widgetsMenu = $.widget( "ui.menu", {
 		this.active = this.active || $( event.target ).closest( ".ui-menu-item" );
 		var ui = { item: this.active };
 		if ( !this.active.has( ".ui-menu" ).length ) {
-			this.collapseAll( event, true );
+			this.collapSalel( event, true );
 		}
 		this._trigger( "select", event, ui );
 	},
@@ -13971,7 +13971,7 @@ var widgetsSelectmenu = $.widget( "ui.selectmenu", [ $.ui.formResetMixin, {
 		// Don't close the menu on mouseleave
 		this.menuInstance._off( this.menu, "mouseleave" );
 
-		// Cancel the menu's collapseAll on document click
+		// Cancel the menu's collapSalel on document click
 		this.menuInstance._closeOnDocumentClick = function() {
 			return false;
 		};

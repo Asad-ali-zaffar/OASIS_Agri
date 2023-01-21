@@ -7,25 +7,17 @@ use App\Http\Controllers\{
     Admin\CustomerRegisterationController,
     Admin\EmployeesRegistrationController,
     Admin\PurchaseController,
-    Admin\SealController,
+    Admin\SaleController,
     Admin\ReturnedProductController,
     Admin\ExpenseController,
     Admin\SalaryPayController,
     Admin\ProductStockController,
     Admin\InvoiceController,
     Admin\PoliciesController,
-    Admin\BuyPoliciesController
+    Admin\BuyPoliciesController,
+    Admin\DashboardController
 };
-use App\Models\{
-    EmployeesRegistration,
-    CustomerRegisteration,
-    Purchase,
-    Seal,
-    Product,
-    Expense,
-    ReturnedProduct,
-    SalaryPay
-};
+
 
 /*
 |--------------------------------------------------------------------------
@@ -42,19 +34,8 @@ Route::get('/', function () {
     return view('auth.login');
     //welcome
 });
-
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/dashboard', function () {
-        $data['EmployeesRegistration']=EmployeesRegistration::all();
-        $data['CustomerRegisteration']=CustomerRegisteration::all();
-        $data['Purchase']=Purchase::all();
-        $data['Seal']=Seal::all();
-        $data['Product']=Product::all();
-        $data['Expense']=Expense::all();
-        $data['ReturnedProduct']=ReturnedProduct::all();
-        $data['SalaryPay']=SalaryPay::all();
-        return view('dashboard',compact('data'));
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard',[DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::middleware('auth')->group(function () {
 
@@ -91,6 +72,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::group(['prefix' => 'salary_pays', 'as' => 'salary_pays.'], function () {
             Route::get('index', [SalaryPayController::class, 'index'])->name('index');
             Route::get('create', [SalaryPayController::class, 'create'])->name('create');
+            Route::get('print/{salaryPayID}', [SalaryPayController::class, 'print'])->name('print');
             Route::post('store-salary_pays', [SalaryPayController::class, 'store'])->name('store');
             Route::post('edit-salary_pays', [SalaryPayController::class, 'edit'])->name('edit');
             Route::post('delete-salary_pays', [SalaryPayController::class, 'destroy'])->name('delete');
@@ -99,24 +81,26 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
             Route::get('index', [PurchaseController::class, 'index'])->name('index');
             Route::get('create', [PurchaseController::class, 'create'])->name('create');
             Route::post('store-purchase', [PurchaseController::class, 'store'])->name('store');
-            Route::post('edit-purchase', [PurchaseController::class, 'edit'])->name('edit');
+            Route::get('edit-purchase/{id?}', [PurchaseController::class, 'edit'])->name('edit');
             Route::post('delete-purchase', [PurchaseController::class, 'destroy'])->name('delete');
         });
-        Route::group(['prefix' => 'Sale', 'as' => 'Sale.'], function () {
-            Route::get('index', [SealController::class, 'index'])->name('index');
-            Route::get('create', [SealController::class, 'create'])->name('create');
-            Route::get('show', [SealController::class, 'show'])->name('show');
-            Route::get('getBuyPolicy', [SealController::class, 'update'])->name('getBuyPolicy');
-            Route::post('store-purchase', [SealController::class, 'store'])->name('store');
-            Route::post('edit-purchase', [SealController::class, 'edit'])->name('edit');
-            Route::post('delete-purchase', [SealController::class, 'destroy'])->name('delete');
+
+        Route::group(['prefix' => 'sale', 'as' => 'sale.'], function () {
+            Route::get('index', [SaleController::class, 'index'])->name('index');
+            Route::get('create', [SaleController::class, 'create'])->name('create');
+            Route::get('create/new', [SaleController::class, 'create_sale'])->name('create_sale');
+            Route::get('show', [SaleController::class, 'show'])->name('show');
+            Route::get('getBuyPolicy', [SaleController::class, 'update'])->name('getBuyPolicy');
+            Route::post('store-purchase', [SaleController::class, 'store'])->name('store');
+            Route::get('editpurchase/{id}', [SaleController::class, 'edit'])->name('edit');
+            Route::post('delete-purchase', [SaleController::class, 'destroy'])->name('delete');
         });
         Route::group(['prefix' => 'returned_product', 'as' => 'returned_product.'], function () {
             Route::get('index', [ReturnedProductController::class, 'index'])->name('index');
             Route::get('create', [ReturnedProductController::class, 'create'])->name('create');
             Route::get('show', [ReturnedProductController::class, 'show'])->name('show');
             Route::post('store-returned_product', [ReturnedProductController::class, 'store'])->name('store');
-            Route::post('edit-returned_product', [ReturnedProductController::class, 'edit'])->name('edit');
+            Route::get('edit/{id}', [ReturnedProductController::class, 'edit'])->name('edit');
             Route::post('delete-returned_product', [ReturnedProductController::class, 'destroy'])->name('delete');
         });
         Route::group(['prefix' => 'product_stock', 'as' => 'product_stock.'], function () {

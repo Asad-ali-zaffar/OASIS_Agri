@@ -30,7 +30,10 @@
         <div class="card-header">
             <h3 class="card-title">{{ __('Returned Product Table') }}</h3>
             {{-- @can('create_patient') --}}
-            <a onClick="add()" href="javascript:void(0)" class="btn btn-primary btn-sm float-right">
+            {{-- <a onClick="add()" href="javascript:void(0)" class="btn btn-primary btn-sm float-right">
+                <i class="fa fa-plus"></i> {{ __('Create') }}
+            </a> --}}
+            <a href="{{ route('admin.returned_product.create') }}" class="btn btn-primary btn-sm float-right">
                 <i class="fa fa-plus"></i> {{ __('Create') }}
             </a>
             {{-- @endcan --}}
@@ -45,19 +48,19 @@
             <div class="row">
                 <div class="col-lg-12 table-responsive ">
 
-                    <table class="table table-bordered" id="ajax-crud-datatable">
+                    <table class="table-striped table-hover table-bordered" id="ajax-crud-datatable">
                         <thead>
                             <tr>
-                                <th width="20px">ID#</th>
+                                <th>ID#</th>
                                 <th>{{ __('Customer Name') }}</th>
                                 <th>{{ __('Customer Phone No') }}</th>
                                 <th>{{ __('Customer CNiC') }}</th>
-                                <th>{{ __('Product name') }}</th>
+                                {{-- <th>{{ __('Product name') }}</th>
                                 <th>{{ __('Product code') }}</th>
                                 <th>{{ __('Product Sale Price') }}</th>
+                                <th>{{ __('Product Quantity') }}</th> --}}
                                 <th>{{ __('Date/Time') }}</th>
-                                <th>{{ __('Product Quantity') }}</th>
-                                <th>{{ __('Total Bill') }}</th>
+                                <th>{{ __('Return Amount') }}</th>
                                 <th width="115px">{{ __('Action') }}</th>
                             </tr>
                         </thead>
@@ -118,8 +121,9 @@
                                                     <i class="fa fa-phone" aria-hidden="true"></i>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control" id="customer_phone_no" name="customer_phone_no"
-                                                placeholder="Customer Phone No" maxlength="50" required="" readonly>
+                                            <input type="text" class="form-control" id="customer_phone_no"
+                                                name="customer_phone_no" placeholder="Customer Phone No" maxlength="50"
+                                                required="" readonly>
                                         </div>
                                     </div>
 
@@ -140,8 +144,9 @@
                                                     <i class="fa fa-id-card" aria-hidden="true"></i>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control" id="customer_CNiC" name="customer_CNiC"
-                                                placeholder="Customer CNiC" maxlength="15" required="" readonly>
+                                            <input type="text" class="form-control" id="customer_CNiC"
+                                                name="customer_CNiC" placeholder="Customer CNiC" maxlength="15"
+                                                required="" readonly>
                                         </div>
                                     </div>
 
@@ -182,7 +187,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Product Code</label>
+                                    <label for="name" class="col-sm-12 control-label">Product Code</label>
                                     <div class="col-sm-12">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -190,8 +195,9 @@
                                                     <i class="fa fa-doler"><b>#</b></i>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control" id="product_code" name="product_code"
-                                                placeholder="Product Code" maxlength="50" required="" readonly>
+                                            <input type="text" class="form-control" id="product_code"
+                                                name="product_code" placeholder="Product Code" maxlength="50"
+                                                required="" readonly>
                                         </div>
                                     </div>
 
@@ -204,7 +210,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label class="col-sm-6 control-label">Product Sealing Price </label>
+                                    <label class="col-sm-6 control-label">Product Saleing Price </label>
                                     <div class="col-sm-12">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -212,12 +218,13 @@
                                                     <i class="fa fa-doler" aria-hidden="true">Rs</i>
                                                 </span>
                                             </div>
-                                            <input type="number" class="form-control" id="product_seal_price"
-                                                name="product_seal_price" placeholder="Sealing Price" required="" readonly>
+                                            <input type="number" class="form-control" id="product_Sale_price"
+                                                name="product_Sale_price" placeholder="Saleing Price" required=""
+                                                readonly>
                                         </div>
                                     </div>
                                     <span class="text-danger">
-                                        @error('product_seal_price')
+                                        @error('product_Sale_price')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -234,7 +241,7 @@
                                                 </span>
                                             </div>
                                             <input type="number" class="form-control" id="delivery_charges"
-                                                name="delivery_charges" placeholder="Delivery Charges" >
+                                                name="delivery_charges" placeholder="Delivery Charges">
                                         </div>
                                     </div>
                                     <span class="text-danger">
@@ -255,7 +262,7 @@
                                                 </span>
                                             </div>
                                             <input type="number" class="form-control" id="charges_amount"
-                                                name="charges_amount" placeholder="Charges Amount" >
+                                                name="charges_amount" placeholder="Charges Amount">
                                         </div>
                                     </div>
                                     <span class="text-danger">
@@ -267,7 +274,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label class="col-sm-6 control-label">Seal Product Quantity</label>
+                                    <label class="col-sm-6 control-label">Sale Product Quantity</label>
                                     <div class="col-sm-12">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -275,12 +282,13 @@
                                                     <i class="fa fa-amount-asc" aria-hidden="true">Q</i>
                                                 </span>
                                             </div>
-                                            <input type="number" class="form-control" id="seal_product_quantity"
-                                                name="seal_product_quantity" placeholder="Enter Seal Product Quantity" required="" readonly>
+                                            <input type="number" class="form-control" id="Sale_product_quantity"
+                                                name="Sale_product_quantity" placeholder="Enter Sale Product Quantity"
+                                                required="" readonly>
                                         </div>
                                     </div>
                                     <span class="text-danger">
-                                        @error('seal_product_quantity')
+                                        @error('Sale_product_quantity')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -297,7 +305,8 @@
                                                 </span>
                                             </div>
                                             <input type="number" class="form-control" id="product_quantity"
-                                                name="product_quantity" placeholder="Enter Product Quantity" required="">
+                                                name="product_quantity" placeholder="Enter Product Quantity"
+                                                required="">
                                         </div>
                                     </div>
                                     <span class="text-danger">
@@ -318,7 +327,8 @@
                                                 </span>
                                             </div>
                                             <input type="datetime-local" class="form-control" id="return_date_and_time"
-                                                name="return_date_and_time" placeholder="Enter Product Quantity" required="" >
+                                                name="return_date_and_time" placeholder="Enter Product Quantity"
+                                                required="">
                                         </div>
                                     </div>
                                     <span class="text-danger">
@@ -338,8 +348,8 @@
                                                     <i class="fa fa-amount-asc" aria-hidden="true">Q</i>
                                                 </span>
                                             </div>
-                                            <input type="number" class="form-control" id="total_bill"
-                                                name="total_bill" placeholder="Total Amount" required="">
+                                            <input type="number" class="form-control" id="total_bill" name="total_bill"
+                                                placeholder="Total Amount" required="">
                                         </div>
                                     </div>
                                     <span class="text-danger">
@@ -373,8 +383,9 @@
     <!-- end bootstrap model -->
 @endsection
 @section('scripts')
-    {{-- <script src="{{ url('js/admin/product_method_entry.js') }}"></script> --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
     <script type="text/javascript">
+        var table;
         $(document).ready(function() {
 
             //active
@@ -384,66 +395,18 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $(document).on('change', '#product_id', function(e) {
-                var id = $('#product_id').val();
-                var c_id = $('#customer_id').val();
-                $("#product_quantity").attr("readonly", false);
-                $.ajax({
-                    type: "get",
-                    url: "{{ route('admin.returned_product.create') }}",
-                    data: {
-                        id: id,
-                        c_id: c_id,
-                    },
-                    dataType: 'json',
-                    success: function(res) {
-                        $('#product_code').val(res.product_code);
-                        $('#product_seal_price').val(res.product_seal_price);
-                        $('#seal_product_quantity').val(res.product_quantity);
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(xhr.status +' '+thrownError);
-                    }
 
-                });
-            });
-            $(document).on('keyup', '#product_quantity', function(e) {
-                var seal_quantity = $('#seal_product_quantity').val();
-                var return_quantity = $('#product_quantity').val();
-                var ret=seal_quantity-return_quantity;
-                if(ret <= 0){
-                    $("#product_quantity").attr("readonly", true);
-                    $('#product_quantity').val(seal_quantity);
-                }
-            });
-            $(document).on('change', '#customer_id', function(e) {
-                var id = $('#customer_id').val();
-                $("#product_quantity").attr("readonly", false);
-                $.ajax({
-                    type: "get",
-                    url: "{{ route('admin.returned_product.show') }}",
-                    data: {
-                        id: id
-                    },
-                    dataType: 'json',
-                    success: function(res) {
-                        $('#customer_phone_no').val(res.customer_phone_no);
-                        $('#customer_CNiC').val(res.customer_CNiC);
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(xhr.status +' '+thrownError);
-                    }
 
-                });
-            });
-
-            $('#ajax-crud-datatable').DataTable({
+            table = $('#ajax-crud-datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: " {{ route('admin.returned_product.index') }}",
                 columns: [{
-                        data: 'return_id',
-                        name: 'return_id'
+                        // data: 'return_id',
+                        "className": 'dt-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
                     },
                     {
                         data: 'customer_name',
@@ -458,29 +421,30 @@
                         data: 'customer_CNiC',
                         name: 'customer_CNiC'
                     },
-                    {
-                        data: 'product_name',
-                        name: 'product_name'
-                    },
-                    {
-                        data: 'product_code',
-                        name: 'product_code'
-                    },
-                    {
-                        data: 'product_seal_price',
-                        name: 'product_seal_price'
-                    },
+                    // {
+                    //     data: 'product_name',
+                    //     name: 'product_name'
+                    // },
+                    // {
+                    //     data: 'product_code',
+                    //     name: 'product_code'
+                    // },
+                    // {
+                    //     data: 'product_sale_price',
+                    //     name: 'product_sale_price'
+                    // },
+
+                    // {
+                    //     data: 'receivedQuantity',
+                    //     name: 'receivedQuantity'
+                    // },
                     {
                         data: 'return_date_and_time',
                         name: 'return_date_and_time'
                     },
                     {
-                        data: 'product_quantity',
-                        name: 'product_quantity'
-                    },
-                    {
-                        data: 'total_bill',
-                        name: 'total_bill'
+                        data: 'return_amount',
+                        name: 'return_amount'
                     },
                     {
                         data: 'action',
@@ -492,40 +456,57 @@
                     [0, 'desc']
                 ]
             });
+
         });
+        // Add event listener for opening and closing details
+        $('#ajax-crud-datatable').on('click', 'td.dt-control', function() {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
 
-        function add() {
-            $('#CompanyForm').trigger("reset");
-            $('#CompanyModal').html("Add New Returned Product Registeration");
-            $('#company-modal').modal('show');
-            $('#id').val('');
-        }
-
-        function editFunc(id) {
-            $.ajax({
-                type: "POST",
-                url: "{{ route('admin.returned_product.edit') }}",
-                data: {
-                    id: id
-                },
-                dataType: 'json',
-                success: function(res) {
-                    $('#CompanyModal').html("Edit Returned Product Registeration");
-                    $('#company-modal').modal('show');
-                    $('#id').val(res.id);
-                    $('#customer_id').val(res.customer_id);
-                    $('#customer_phone_no').val(res.customer_phone_no);
-                    $('#customer_CNiC').val(res.customer_CNiC);
-                    $('#product_id').val(res.product_id);
-                    $('#product_code').val(res.product_code);
-                    $('#product_seal_price').val(res.product_seal_price);
-                    $('#delivery_charges').val(res.delivery_charges);
-                    $('#product_quantity').val(res.product_quantity);
-                    $('#return_date_and_time').val(res.return_date_and_time);
-                }
-
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+                tr.removeClass('dt-hasChild');
+                tr.addClass('dt-control');
+            } else {
+                // Open this row
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+                tr.addClass('dt-hasChild');
+            }
+        });
+        /* Formatting function for row details - modify as you need */
+        function format(d) {
+            // `d` is the original data object for the row
+            var recordes = JSON.parse(d.return_product);
+            // return recordes;
+            var html = "<table border='1|1' width='100%'>";
+            recordes.forEach((recorde) => {
+                html += "<tr>";
+                html += "<td>Product name:</td>";
+                html += "<td>" + recorde.product_name + "</td>";
+                html += "<td>Product Code:</td>";
+                html += "<td>" + recorde.product_code + "</td>";
+                html += "</tr>";
+                html += "<tr>";
+                html += "<td>Sale Price:</td>";
+                html += "<td>" + recorde.product_sale_price + "</td>";
+                html += "<td>Sale Quantity:</td>";
+                html += "<td>" + recorde.product_quantity+ "</td>";
+                html += "</tr>";
+                html += "<tr>";
+                html += "<td>Received Quantity:</td>";
+                html += "<td>" + recorde.receivedQuantity + "</td>";
+                html += "<td>Return Amount:</td>";
+                html += "<td>" + recorde.return_amount + "</td>";
+                html += "</tr>";
             });
-        }
+            html += "</table>";
+            return html;
+           }
 
         function deleteFunc(id) {
             if (confirm("Delete Record?") == true) {
@@ -545,28 +526,7 @@
                 });
             }
         }
-        $('#CompanyForm').submit(function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-                type: 'POST',
-                url: "{{ route('admin.returned_product.store') }}",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: (data) => {
-                    $("#company-modal").modal('hide');
-                    var oTable = $('#ajax-crud-datatable').dataTable();
-                    oTable.fnDraw(false);
-                    $("#btn-save").html('Save changes');
-                    // $("#btn-save").attr("disabled", false);
-                },
-                error: function(data) {
-                    console.log(data);
-                }
-            });
-        });
+
         $('#CompanyForm').validate({
             rules: {
                 product_id: {
@@ -581,7 +541,7 @@
                     required: true,
                     number: true
                 },
-                sealing_price: {
+                Saleing_price: {
                     required: true,
                     number: true
                 },

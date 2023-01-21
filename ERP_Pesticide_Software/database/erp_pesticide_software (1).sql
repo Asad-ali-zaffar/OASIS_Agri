@@ -190,7 +190,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (38, '2022_10_19_065300_create_salary_pays_table', 1),
 (39, '2022_11_13_074916_create_policies_table', 1),
 (40, '2022_11_14_075038_create_buy_policies_table', 1),
-(49, '2022_10_14_103128_create_seals_table', 2);
+(49, '2022_10_14_103128_create_Sales_table', 2);
 
 -- --------------------------------------------------------
 
@@ -283,7 +283,7 @@ CREATE TABLE `purchases` (
   `product_id` int(11) NOT NULL,
   `product_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `purchasing_price` int(11) NOT NULL,
-  `sealing_price` int(11) NOT NULL,
+  `Saleing_price` int(11) NOT NULL,
   `expiry_date` date NOT NULL,
   `purchasing_expense` int(11) NOT NULL,
   `product_quantity` int(11) NOT NULL,
@@ -296,7 +296,7 @@ CREATE TABLE `purchases` (
 -- Dumping data for table `purchases`
 --
 
-INSERT INTO `purchases` (`id`, `product_id`, `product_code`, `purchasing_price`, `sealing_price`, `expiry_date`, `purchasing_expense`, `product_quantity`, `deleted_at`, `created_at`, `updated_at`) VALUES
+INSERT INTO `purchases` (`id`, `product_id`, `product_code`, `purchasing_price`, `Saleing_price`, `expiry_date`, `purchasing_expense`, `product_quantity`, `deleted_at`, `created_at`, `updated_at`) VALUES
 (1, 1, '001', 1000, 2000, '2022-12-10', 1200, 170, NULL, '2022-11-19 06:43:26', '2022-11-20 07:56:02'),
 (2, 2, '002', 1600, 2400, '2022-12-10', 1200, 150, NULL, '2022-11-19 06:44:15', '2022-11-20 07:55:48');
 
@@ -313,7 +313,7 @@ CREATE TABLE `returned_products` (
   `customer_CNiC` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `product_id` bigint(20) NOT NULL,
   `product_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `product_seal_price` bigint(20) NOT NULL,
+  `product_Sale_price` bigint(20) NOT NULL,
   `delivery_charges` bigint(20) DEFAULT NULL,
   `charges_amount` bigint(20) DEFAULT NULL,
   `product_quantity` bigint(20) NOT NULL,
@@ -328,7 +328,7 @@ CREATE TABLE `returned_products` (
 -- Dumping data for table `returned_products`
 --
 
-INSERT INTO `returned_products` (`id`, `customer_id`, `customer_phone_no`, `customer_CNiC`, `product_id`, `product_code`, `product_seal_price`, `delivery_charges`, `charges_amount`, `product_quantity`, `return_date_and_time`, `total_bill`, `deleted_at`, `created_at`, `updated_at`) VALUES
+INSERT INTO `returned_products` (`id`, `customer_id`, `customer_phone_no`, `customer_CNiC`, `product_id`, `product_code`, `product_Sale_price`, `delivery_charges`, `charges_amount`, `product_quantity`, `return_date_and_time`, `total_bill`, `deleted_at`, `created_at`, `updated_at`) VALUES
 (2, 1, '0388-3888909', '31033-3338992-3', 1, '001', 2000, NULL, 0, 0, '2022-11-19 16:56:00', 0, NULL, '2022-11-19 06:57:05', '2022-11-20 12:12:28'),
 (5, 1, '0388-3888909', '31033-3338992-3', 2, '002', 2400, NULL, 0, 0, '2022-11-22 07:06:00', 0, NULL, '2022-11-21 21:06:31', '2022-11-21 21:06:31');
 
@@ -364,17 +364,17 @@ INSERT INTO `salary_pays` (`id`, `employee_id`, `so_of`, `CNIC`, `designation`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `seals`
+-- Table structure for table `Sales`
 --
 
-CREATE TABLE `seals` (
+CREATE TABLE `Sales` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `customer_id` bigint(20) NOT NULL,
   `customer_phone_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `customer_CNiC` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_id` bigint(20) NOT NULL,
   `product_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `product_seal_price` bigint(20) NOT NULL,
+  `product_Sale_price` bigint(20) NOT NULL,
   `policy_id` bigint(20) NOT NULL,
   `policy_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `policy_discount` bigint(20) NOT NULL,
@@ -390,10 +390,10 @@ CREATE TABLE `seals` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `seals`
+-- Dumping data for table `Sales`
 --
 
-INSERT INTO `seals` (`id`, `customer_id`, `customer_phone_no`, `customer_CNiC`, `product_id`, `product_code`, `product_seal_price`, `policy_id`, `policy_code`, `policy_discount`, `credit_note`, `delivery_charges`, `charges_amount`, `recive_amount`, `product_quantity`, `total_bill`, `deleted_at`, `created_at`, `updated_at`) VALUES
+INSERT INTO `Sales` (`id`, `customer_id`, `customer_phone_no`, `customer_CNiC`, `product_id`, `product_code`, `product_Sale_price`, `policy_id`, `policy_code`, `policy_discount`, `credit_note`, `delivery_charges`, `charges_amount`, `recive_amount`, `product_quantity`, `total_bill`, `deleted_at`, `created_at`, `updated_at`) VALUES
 (1, 1, '0388-3888909', '31033-3338992-3', 1, '001', 2000, 1, '0032', 10, 26, 10, 10, 0, 140, 777778, NULL, '2022-11-20 09:50:20', '2022-11-21 21:13:55'),
 (2, 1, '0388-3888909', '31033-3338992-3', 2, '002', 2400, 1, '0032', 10, 26, 1200, 1200, 120000, 120, 800000, NULL, '2022-11-21 21:05:14', '2022-11-21 21:15:42');
 
@@ -507,9 +507,9 @@ ALTER TABLE `salary_pays`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `seals`
+-- Indexes for table `Sales`
 --
-ALTER TABLE `seals`
+ALTER TABLE `Sales`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -596,9 +596,9 @@ ALTER TABLE `salary_pays`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `seals`
+-- AUTO_INCREMENT for table `Sales`
 --
-ALTER TABLE `seals`
+ALTER TABLE `Sales`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --

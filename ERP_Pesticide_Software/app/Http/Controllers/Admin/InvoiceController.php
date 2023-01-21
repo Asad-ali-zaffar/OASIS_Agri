@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use App\Models\{
     Purchase,
-    Seal,
+    Sale,
     Product,
     ReturnedProduct,
     Expense,
@@ -28,17 +28,17 @@ class InvoiceController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $seal = purchase::all();
-            foreach ($seal as  $value) {
+            $Sale = purchase::all();
+            foreach ($Sale as  $value) {
                 $product_id = $value->product_id;
                 $return[$value->product_id] =  $data['expense'] = Expense::where('product_id', $product_id)->get();
                 $data['returnedproduct'] = ReturnedProduct::where('product_id', $product_id)->get();
-                $data['seal'] = Seal::where('product_id', $product_id)->get();
-                $empty = count($data['seal']);
+                $data['Sale'] = Sale::where('product_id', $product_id)->get();
+                $empty = count($data['Sale']);
                 $emptyr = count($data['returnedproduct']);
                 $sq[$value->product_id] = 0;
                 if ($empty >= 0) {
-                    foreach ($data['seal'] as $val) {
+                    foreach ($data['Sale'] as $val) {
                         $sq[$value->product_id] += $val->product_quantity;
                     }
                 } else {
@@ -49,7 +49,7 @@ class InvoiceController extends Controller
                         $sq[$value->product_id] -= $val->product_quantity;
                     }
                 }
-                $amount[$value->product_id] = $value->sealing_price * $sq[$value->product_id];
+                $amount[$value->product_id] = $value->Saleing_price * $sq[$value->product_id];
                 $exp_pur[$value->product_id] = 0;
                 $exp_pac[$value->product_id] = 0;
                 $exp_sal[$value->product_id] = 0;
@@ -67,21 +67,21 @@ class InvoiceController extends Controller
             // return $return;
             $id = 0;
             // $stock[0] = array();
-            foreach ($seal as $key => $value) {
+            foreach ($Sale as $key => $value) {
                 if ($id != $value->product_id) {
                     $id = $value->product_id;
                     $status = "";
                     if ($sq[$value->product_id] > 0) {
-                        $status = 'Sealing';
+                        $status = 'Saleing';
                     } else {
                         if ($amount[$value->product_id] < 0) {
                             $status = 'Loss';
                         } else {
-                            $status = 'Not Sealing';
+                            $status = 'Not Saleing';
                         }
                     }
                     $product = Product::find($id);
-                    $stock[$key] = array('product_id' => $product->product_name, 'product_code' => $value->product_code, 'product_quantity' => $sq[$value->product_id], 'product_price' => $value->sealing_price, 'purchasee_expence' => $exp_pur[$value->product_id], 'packing_expence' => $exp_pac[$value->product_id], 'sales_expense' => $exp_sal[$value->product_id], 'product_expence' => $exp[$value->product_id]);
+                    $stock[$key] = array('product_id' => $product->product_name, 'product_code' => $value->product_code, 'product_quantity' => $sq[$value->product_id], 'product_price' => $value->Saleing_price, 'purchasee_expence' => $exp_pur[$value->product_id], 'packing_expence' => $exp_pac[$value->product_id], 'sales_expense' => $exp_sal[$value->product_id], 'product_expence' => $exp[$value->product_id]);
                 }
             }
             // return $stock;
@@ -100,14 +100,14 @@ class InvoiceController extends Controller
         // return $request;
         $data['customer'] = CustomerRegisteration::all();
         if (request()->ajax()) {
-            $sale = Seal::all();
+            $sale = Sale::all();
             foreach ($sale as $key => $value) {
                 $product_id = $value->product_id;
                 $customer_id = $value->customer_id;
                 $return[$value->id] = $data['returnedproduct'] = ReturnedProduct::where('product_id', $product_id)->where('customer_id', $customer_id)->get();
-                $data['seal'] = Seal::where('product_id', $product_id)->get();
-                foreach ($data['seal'] as  $val) {
-                    $seal[$product_id] = $val;
+                $data['Sale'] = Sale::where('product_id', $product_id)->get();
+                foreach ($data['Sale'] as  $val) {
+                    $Sale[$product_id] = $val;
                 }
                 foreach ($data['returnedproduct'] as $val) {
                     $returnedproduct[$product_id] = $val;
@@ -121,18 +121,18 @@ class InvoiceController extends Controller
             $payable = 0;
             $reciveable = 0;
             foreach ($sale as $key => $value) {
-                $return[$value->id] = $seal[$value->product_id]->customer_id;
-                $data['customer'] = CustomerRegisteration::find($seal[$value->product_id]->customer_id);
-                $data['product'] = Product::find($seal[$value->product_id]->product_id);
+                $return[$value->id] = $Sale[$value->product_id]->customer_id;
+                $data['customer'] = CustomerRegisteration::find($Sale[$value->product_id]->customer_id);
+                $data['product'] = Product::find($Sale[$value->product_id]->product_id);
                 if ($indexes > 1) {
                     $data['customer']->advance_payment = 0;
                 }
-                if (in_array($seal[$value->product_id]->customer_id, $return, TRUE)) {
+                if (in_array($Sale[$value->product_id]->customer_id, $return, TRUE)) {
                     $indexes++;
                 }
-                $total_q = $seal[$value->product_id]->product_quantity - $returnedproduct[$value->product_id]->product_quantity;
-                // $totalBill += $bill = $total_q * $seal[$value->product_id]->total_bill;
-                $totalBill += $bill = $seal[$value->product_id]->total_bill;
+                $total_q = $Sale[$value->product_id]->product_quantity - $returnedproduct[$value->product_id]->product_quantity;
+                // $totalBill += $bill = $total_q * $Sale[$value->product_id]->total_bill;
+                $totalBill += $bill = $Sale[$value->product_id]->total_bill;
                 if ($key == 0) {
                     $payable = $total = $bill - $data['customer']->advance_payment;
                 } elseif ($payable > 0) {
@@ -149,9 +149,9 @@ class InvoiceController extends Controller
                 $stock[$key] = array(
                     'customer_id' => $data['customer']->customer_name,
                     'product_id' => $data['product']->product_name,
-                    'product_quantity' => $seal[$value->product_id]->product_quantity,
-                    'product_seal_price' => $seal[$value->product_id]->product_seal_price,
-                    'created_at' => date('d-M-y', strtotime($seal[$value->product_id]->created_at)),
+                    'product_quantity' => $Sale[$value->product_id]->product_quantity,
+                    'product_Sale_price' => $Sale[$value->product_id]->product_Sale_price,
+                    'created_at' => date('d-M-y', strtotime($Sale[$value->product_id]->created_at)),
                     'policy_name' => $Policies->policy_name,
                     'policy_code' => $value->policy_code,
                     'policy_discount' => $value->policy_discount,
@@ -181,9 +181,9 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $data['customer'] = CustomerRegisteration::all();
-        $seal = Seal::where('customer_id', $request->customer_id)->get();
+        $Sale = Sale::where('customer_id', $request->customer_id)->get();
         if (request()->ajax()) {
-            foreach ($seal as $key => $value) {
+            foreach ($Sale as $key => $value) {
                 $product_id = $value->product_id;
                 $customer_id = $value->customer_id;
                 $return[$value->id] = $data['returnedproduct'] = ReturnedProduct::where('product_id', $product_id)->where('customer_id', $customer_id)->get();
@@ -192,13 +192,13 @@ class InvoiceController extends Controller
                     $returnedproduct[$val->product_id] = $val;
                 }
             }
-            // return $seal;
+            // return $Sale;
             $stock[0] = 0;
             $indexes = null;
             $totalBill = 0;
             $payable = 0;
             $reciveable = 0;
-            foreach ($seal as $key => $value) {
+            foreach ($Sale as $key => $value) {
                 $return[$value->id]= $sal[$value->product_id]->customer_id;
                 $m[$value->product_id] = $data['customer'] = CustomerRegisteration::find($sal[$value->product_id]->customer_id);
                 $data['product'] = Product::find($sal[$value->product_id]->product_id);
@@ -209,7 +209,7 @@ class InvoiceController extends Controller
                     $indexes++;
                 }
                 $total_q = $sal[$value->product_id]->product_quantity - $returnedproduct[$value->product_id]->product_quantity;
-                // $totalBill += $bill = $total_q * $sal[$value->product_id]->product_seal_price;
+                // $totalBill += $bill = $total_q * $sal[$value->product_id]->product_Sale_price;
                 $totalBill += $bill = $sal[$value->product_id]->total_bill;
 
                 if ($key == 0) {
@@ -229,7 +229,7 @@ class InvoiceController extends Controller
                     'customer_id' => $data['customer']->customer_name,
                     'product_id' => $data['product']->product_name,
                     'product_quantity' => $sal[$value->product_id]->product_quantity,
-                    'product_seal_price' => $sal[$value->product_id]->product_seal_price,
+                    'product_Sale_price' => $sal[$value->product_id]->product_Sale_price,
                     'created_at' => date('d-M-y', strtotime($sal[$value->product_id]->created_at)),
                     'policy_name' => $Policies->policy_name,
                     'policy_code' => $value->policy_code,
@@ -267,9 +267,9 @@ class InvoiceController extends Controller
 
         // with out query
         $data['customer'] = CustomerRegisteration::all();
-        $seal = Seal::where('customer_id', $request->customer_id)->get();
+        $Sale = Sale::where('customer_id', $request->customer_id)->get();
         // if (request()->ajax()) {
-        // foreach ($seal as $key => $value) {
+        // foreach ($Sale as $key => $value) {
         //     $product_id = $value->product_id;
         //     $customer_id = $value->customer_id;
         //     $return[$value->product_id] = $data['returnedproduct'] = ReturnedProduct::where('product_id', $product_id)->where('customer_id', $customer_id)->get();
@@ -278,16 +278,16 @@ class InvoiceController extends Controller
         //         $returnedproduct[$val->product_id] = $val;
         //     }
         // }
-        // // return $seal;
+        // // return $Sale;
 
         // $stock[0] = 0;
         // $indexes = null;
-        // foreach ($seal as $key => $value) {
+        // foreach ($Sale as $key => $value) {
         //     $return[$value->product_id] = $sal[$value->product_id]->customer_id;
         //     $m[$value->product_id] = $data['customer'] = CustomerRegisteration::find($sal[$value->product_id]->customer_id);
         //     $data['product'] = Product::find($sal[$value->product_id]->product_id);
         //     $total_q = $sal[$value->product_id]->product_quantity - $returnedproduct[$value->product_id]->product_quantity;
-        //     $bill = $total_q * $sal[$value->product_id]->product_seal_price;
+        //     $bill = $total_q * $sal[$value->product_id]->product_Sale_price;
         //     if ($key == 1) {
         //         if ($indexes <= 0) {
         //             $data['customer']->advance_payment = 0;
@@ -297,12 +297,12 @@ class InvoiceController extends Controller
         //     if ($total <= 0) {
         //         $indexes = 0;
         //     }
-        //     $stock[$key] = array('customer_id' => $data['customer']->customer_name, 'product_id' => $data['product']->product_name, 'product_quantity' => $sal[$value->product_id]->product_quantity, 'product_seal_price' => $sal[$value->product_id]->product_seal_price, 'created_at' => date('d-M-y', strtotime($sal[$value->product_id]->created_at)), 'total_quantity' => $total_q, 'bill' => $bill, 'return_product_quantity' => $returnedproduct[$value->product_id]->product_quantity, 'return_date' => date('d-M-y', strtotime($returnedproduct[$value->product_id]->return_date_and_time)), 'advance_amount' => $data['customer']->advance_payment, 'total' => $total);
+        //     $stock[$key] = array('customer_id' => $data['customer']->customer_name, 'product_id' => $data['product']->product_name, 'product_quantity' => $sal[$value->product_id]->product_quantity, 'product_Sale_price' => $sal[$value->product_id]->product_Sale_price, 'created_at' => date('d-M-y', strtotime($sal[$value->product_id]->created_at)), 'total_quantity' => $total_q, 'bill' => $bill, 'return_product_quantity' => $returnedproduct[$value->product_id]->product_quantity, 'return_date' => date('d-M-y', strtotime($returnedproduct[$value->product_id]->return_date_and_time)), 'advance_amount' => $data['customer']->advance_payment, 'total' => $total);
         // }
         // return $stock;
         //     return DataTables::of($stock)->make(true);
         // }
-        foreach ($seal as $key => $value) {
+        foreach ($Sale as $key => $value) {
             $product_id = $value->product_id;
             $customer_id = $value->customer_id;
             $return[$value->id] = $data['returnedproduct'] = ReturnedProduct::where('product_id', $product_id)->where('customer_id', $customer_id)->get();
@@ -311,13 +311,13 @@ class InvoiceController extends Controller
                 $returnedproduct[$val->product_id] = $val;
             }
         }
-        // return $seal;
+        // return $Sale;
         $stock[0] = 0;
         $indexes = null;
         $totalBill = 0;
         $payable = 0;
         $reciveable = 0;
-        foreach ($seal as $key => $value) {
+        foreach ($Sale as $key => $value) {
             $return[$value->id]= $sal[$value->product_id]->customer_id;
             $m[$value->product_id] = $data['customer'] = CustomerRegisteration::find($sal[$value->product_id]->customer_id);
             $data['product'] = Product::find($sal[$value->product_id]->product_id);
@@ -328,7 +328,7 @@ class InvoiceController extends Controller
                 $indexes++;
             }
             $total_q = $sal[$value->product_id]->product_quantity - $returnedproduct[$value->product_id]->product_quantity;
-            // $totalBill += $bill = $total_q * $sal[$value->product_id]->product_seal_price;
+            // $totalBill += $bill = $total_q * $sal[$value->product_id]->product_Sale_price;
             $totalBill += $bill = $sal[$value->product_id]->total_bill;
 
             if ($key == 0) {
@@ -348,7 +348,7 @@ class InvoiceController extends Controller
                 'customer_id' => $data['customer']->customer_name,
                 'product_id' => $data['product']->product_name,
                 'product_quantity' => $sal[$value->product_id]->product_quantity,
-                'product_seal_price' => $sal[$value->product_id]->product_seal_price,
+                'product_Sale_price' => $sal[$value->product_id]->product_Sale_price,
                 'created_at' => date('d-M-y', strtotime($sal[$value->product_id]->created_at)),
                 'policy_name' => $Policies->policy_name,
                 'policy_code' => $value->policy_code,
@@ -364,7 +364,7 @@ class InvoiceController extends Controller
                 'PayableAmount' => $payable
             );
         }
-        return view('admin.customer_lager_invoice.PDF', compact('stock', 'data', 'seal'));
+        return view('admin.customer_lager_invoice.PDF', compact('stock', 'data', 'Sale'));
     }
 
     /**

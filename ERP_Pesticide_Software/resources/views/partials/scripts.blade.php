@@ -39,6 +39,7 @@
 <script src="{{ url('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{ url('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ url('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 {{-- datatable buttons cdn --}}
 {{-- <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.semanticui.min.js"></script>

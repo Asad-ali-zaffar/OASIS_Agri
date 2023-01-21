@@ -216,8 +216,8 @@
                         name: 'product_quantity'
                     },
                     {
-                        data: 'product_seal_price',
-                        name: 'product_seal_price'
+                        data: 'product_Sale_price',
+                        name: 'product_Sale_price'
                     },
                     {
                         data: 'created_at',
@@ -359,8 +359,8 @@
                         name: 'product_quantity'
                     },
                     {
-                        data: 'product_seal_price',
-                        name: 'product_seal_price'
+                        data: 'product_Sale_price',
+                        name: 'product_Sale_price'
                     },
                     {
                         data: 'created_at',

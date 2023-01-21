@@ -46,20 +46,20 @@
             <div class="row">
                 <div class="col-lg-12 table-responsive ">
 
-                    <table class="table table-bordered" id="ajax-crud-datatable">
+                    <table class=" table-bordered" id="ajax-crud-datatable">
                         <thead>
                             <tr>
-                                <th>{{ __('ID#') }}</th>
-                                <th>{{ __('Employe name') }}</th>
-                                <th>{{ __('Father name') }}</th>
+                                <th>{{ __('ID #') }}</th>
+                                <th>{{ __('Employe Name') }}</th>
+                                <th>{{ __('Father Name') }}</th>
                                 <th>{{ __('CNIC #') }}</th>
                                 <th>{{ __('Designation') }}</th>
                                 <th>{{ __('Monthly Expence') }}</th>
                                 <th>{{ __('Monthly Salary') }}</th>
                                 <th>{{ __('Total Amount') }}</th>
                                 <th>{{ __('Date') }}</th>
-                                <th width="15px">{{ __('Status') }}</th>
-                                <th width="120px">{{ __('Action') }}</th>
+                                <th>{{ __('Status') }}</th>
+                                <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
                     </table>
@@ -262,7 +262,7 @@
                                             </div>
                                             <select class="form-control" name="status"
                                                 placeholder="{{ __('Status') }}" id="status" required>
-                                                <option value="0">Un-Paid</option>
+                                                {{-- <option value="0">Un-Paid</option> --}}
                                                 <option value="1">Paid</option>
                                                 <option value="2">Panding</option>
                                             </select>
@@ -336,6 +336,74 @@
                 });
             });
             $('#ajax-crud-datatable').DataTable({
+                dom: "<'row '<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4 'f>>" +
+                    "<'row'<'col-sm-12 'tr>>" +
+                    "<'row'<'col-sm-4 'i><'col-sm-8'p>>",
+                buttons: [
+
+                    // {
+                    //     extend: 'copyHtml5',
+                    //     text: '<i class="fas fa-copy"></i> ' + trans("Copy"),
+                    //     titleAttr: 'Copy',
+                    //     className: 'bg-dark'
+
+                    // },
+                    // {
+                    //     extend: 'excelHtml5',
+                    //     text: '<i class="fas fa-file-excel"></i> ' + trans("Excel"),
+                    //     titleAttr: 'Excel',
+                    //     className: 'bg-dark'
+                    // },
+                    // {
+                    //     extend: 'csvHtml5',
+                    //     text: '<i class="fas fa-file-csv"></i> ' + trans("CVS"),
+                    //     titleAttr: 'CSV',
+                    //     className: 'bg-dark'
+                    // },
+                    // {
+                    //     extend: 'pdfHtml5',
+                    //     text: '<i class="fas fa-file-pdf"></i> ' + trans("PDF"),
+                    //     titleAttr: 'PDF',
+                    //     className: 'bg-dark',
+                    //     customize: function(doc) {
+                    //         $(doc.document.body)
+                    //             .css('font-size', '10pt')
+                    //             .prepend(
+                    //                 '<p class="text-center  mb-0 text-uppercase"><b>OASIS AGRI</b></p><p class="text-center  mb-0">INDUSTRIAL AREA BLOCK "E" R.Y.K</p><p class="text-center  mb-0">SORAKHI, TEHSIL DADYAL, DISTRICT MIRPUR</p><p class="text-center  mb-0">0345-6433332 , 0303-6136037</p><p class="text-center  font-weight-bold mb-0 text-uppercase text-decoration-underline"><u> Customer Ledger Invoice</u></p>'
+                    //             );
+                    //         $(doc.document.body).find('table')
+                    //             .addClass('compact')
+                    //             .css('font-size', 'inherit');
+
+                    //     }
+                    // },
+                    {
+                        extend: 'print',
+                        text: '<i class="fas fa-file-pdf"></i> ' + trans("Print"),
+                        titleAttr: 'PDF',
+                        className: 'bg-dark',
+                        customize: function(win) {
+                            $(win.document.body)
+                                .css('font-size', '10pt')
+                                .prepend(
+                                    '<p class="text-center  mb-0 text-uppercase"><b>OASIS AGRI</b></p><p class="text-center  mb-0">INDUSTRIAL AREA BLOCK "E" R.Y.K</p><p class="text-center  mb-0">SORAKHI, TEHSIL DADYAL, DISTRICT MIRPUR</p><p class="text-center  mb-0">0345-6433332 , 0303-6136037</p><p class="text-center  font-weight-bold mb-0 text-uppercase text-decoration-underline"><u> Customer Ledger Invoice</u></p>'
+                                )
+                                .prepend(
+                                    '<footer style="position: fixed; bottom: 0; width:100%"><div class="row" style="bottom: 0px fix"><div class="col-3 text-center" style="margin-left: 4vh;"><hr>Prepared By</div><div class="col-3 text-center" style=" margin-left: 4vh;"><hr> Approved By</div><div class="col-3 text-center" style="margin-left: 4vh;"><hr> Dealers Signature & Stamp</div></div> </footer>'
+                                );
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    },
+
+                    {
+                        extend: 'colvis',
+                        text: '<i class="fas fa-eye"></i> Manage Columns',
+                        titleAttr: 'Manage',
+                        className: 'bg-dark',
+                    }
+                ],
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('admin.salary_pays.index') }}",

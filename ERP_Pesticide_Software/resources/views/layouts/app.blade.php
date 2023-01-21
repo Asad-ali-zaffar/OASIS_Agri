@@ -14,6 +14,15 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<style>
+    td.dt-control {
+        background: url("https://www.datatables.net/examples/resources/details_open.png") no-repeat center;
+        cursor: pointer;
+    }
+    tr.dt-hasChild td.dt-control {
+        background: url("https://www.datatables.net/examples/resources/details_close.png") no-repeat center;
+    }
+</style>
 <body class="hold-transition sidebar-mini layout-fixed text-sm sidebar-collapse">
     {{-- <div class="preloader">
     </div>

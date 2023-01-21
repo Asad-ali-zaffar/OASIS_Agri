@@ -75,22 +75,6 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-12 table-responsive ">
-                    {{-- <table id="table" class="table table-striped table-hover table-bordered display" width="100%">
-                        <thead>
-                            <tr>
-                                <th>ID#</th>
-                                <th>{{ __('Pattern name') }}</th>
-                                <th>{{ __('Test') }}</th>
-                                <th>{{ __('Remarks') }}</th>
-                                <th>{{ __('Status') }}</th>
-                                <th width="100px">{{ __('Action') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table> --}}
-
                     <table class="table table-bordered" id="ajax-crud-datatable">
                         <thead>
                             <tr>
@@ -102,7 +86,7 @@
                                 <th>{{ __('Phone Number2') }}</th>
                                 <th>{{ __('Address') }}</th>
                                 <th>{{ __('Advance Payment') }}</th>
-                                <th>{{ __('Panding Bill Payment') }}</th>
+                                {{-- <th>{{ __('Panding Bill Payment') }}</th> --}}
                                 <th width="115px">{{ __('Action') }}</th>
                             </tr>
                         </thead>
@@ -274,7 +258,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            {{-- <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label">Panding Bill Payment</label>
                                     <div class="col-sm-12">
@@ -294,7 +278,7 @@
                                         @enderror
                                     </span>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="col-sm-offset-2 col-sm-10">
                             &nbsp;&nbsp;&nbsp;&nbsp; <button type="submit" class="btn btn-outline-primary"
@@ -364,10 +348,10 @@
                         data: 'advance_payment',
                         name: 'advance_payment'
                     },
-                    {
-                        data: 'panding_bill',
-                        name: 'panding_bill'
-                    },
+                    // {
+                    //     data: 'panding_bill',
+                    //     name: 'panding_bill'
+                    // },
 
                     {
                         data: 'action',
@@ -407,7 +391,7 @@
                     $('#phone_number_two').val(res.phone_number_two);
                     $('#adress').val(res.adress);
                     $('#advance_payment').val(res.advance_payment);
-                    $('#panding_bill').val(res.panding_bill);
+                    // $('#panding_bill').val(res.panding_bill);
                 }
 
             });

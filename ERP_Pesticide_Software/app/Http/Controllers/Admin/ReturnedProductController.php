@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{ReturnedProduct,Seal,CustomerRegisteration,Purchase,Product};
+use App\Models\{ReturnedProduct, Sale, CustomerRegisteration, Purchase, Product, SaleProduct, ReturnSaleProduct};
 use DateTime;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -19,31 +19,34 @@ class ReturnedProductController extends Controller
      */
     public function index()
     {
-        $data['product']=Product::all();
-        $data['customer']=CustomerRegisteration::all();
-        if(request()->ajax()) {
-            $getData =ReturnedProduct::select('*','products.product_name as product_name','returned_products.id as return_id','customer_registerations.customer_name as customer_name')
-          ->join('customer_registerations', 'customer_registerations.id', '=', 'returned_products.customer_id','left')
-          ->join('products', 'products.id', '=', 'returned_products.product_id','left')
-            ->get();
-            //
-       //     DB::table('product_method_entries')
-       // ->join('tests', 'tests.id', '=', 'product_method_entries.test_id','left')
-       //     ->select('product_method_entries.*','tests.name as test_name_eng', DB::raw('(CASE
-       // WHEN product_method_entries.status = 0 THEN "In-Active"
-       // WHEN product_method_entries.status = 1 THEN "Active"
-       // WHEN product_method_entries.status = 2 THEN "Suspend"
-       // ELSE "Close" END) AS status'))->get();
-       foreach($getData as $key=> $data){
-        $data->return_date_and_time=date('Y-m-d  h-m-s A',strtotime($data->return_date_and_time));
-       }
-           return DataTables::of($getData)
-           ->addColumn('action', function ($patient) {
-               return view('admin.returned_product._action', compact('patient'));
-           })->make(true);
-       }
-       return view('admin.returned_product.index',compact('data'));
+        $data['product'] = Product::all();
+        $data['customer'] = CustomerRegisteration::all();
+        if (request()->ajax()) {
+            // $getData = ReturnSaleProduct::all();
+            // $getData = ReturnSaleProduct::select('*', 'products.product_name as product_name', 'returned_products.id as return_id', 'customer_registerations.customer_name as customer_name')
+            //     ->join('returned_products', 'returned_products.id', '=', 'return_sale_products.returnSP_id')
+            //     ->join('customer_registerations', 'customer_registerations.id', '=', 'return_sale_products.customer_id')
+            //     ->join('products', 'products.id', '=', 'return_sale_products.product_id')
+            //     ->get();
+            $getData = ReturnedProduct::all();
+            return DataTables::of($getData)
+                ->addColumn('customer_name', function ($patient) {
+                    return get_customer($patient->customer_id)->customer_name;
+                })
+                ->addColumn('return_amount', function ($patient) {
+                    // return get_salesRecordes($patient->id,$patient->customer_id);
+                    return ReturnSaleProduct::where(['returnSP_id'=>$patient->id,'customer_id'=>$patient->customer_id])->sum('return_amount');
+                })
+                ->addColumn('return_product', function ($patient) {
+                    return get_returnsalesRecordes($patient->id,$patient->customer_id);
 
+                    // return view('admin.returned_product.return_amount', compact('patient'));
+                })
+                ->addColumn('action', function ($patient) {
+                    return view('admin.returned_product._action', compact('patient'));
+                })->make(true);
+        }
+        return view('admin.returned_product.index', compact('data'));
     }
 
     /**
@@ -53,25 +56,18 @@ class ReturnedProductController extends Controller
      */
     public function create(Request $request)
     {
-        $Seal=Seal::where('product_id',$request->id)->where('customer_id',$request->c_id)->get();
-        $ReturnedProduct=ReturnedProduct::where('product_id',$request->id)->where('customer_id',$request->c_id)->get();
-        $quantity=0;
-        foreach($Seal as $value){
-            $quantity+=$value->product_quantity;
+        if (request()->ajax()) {
+            $Sale = SaleProduct::where(['product_id' => $request->id, 'customer_id' => $request->c_id])->first();
+            $Sales = SaleProduct::where(['product_id' => $request->id, 'customer_id' => $request->c_id])->get();
+            $Sale->product_quantity = 0;
+            foreach ($Sales as $item) {
+                $Sale->product_quantity += $item->product_quantity;
+            }
+            return Response()->json($Sale);
         }
-        $return_q=0;
-        foreach($ReturnedProduct as $value){
-            $return_q+=$value->product_quantity;
-        }
-        $quantity-=$return_q;
-        $company=Seal::where('product_id',$request->id)->where('customer_id',$request->c_id)->first();
-        $company['product_quantity']=$quantity;
-        $count=is_null($company);
-        if($count != 0){
-            $value =Product::find($request->id);
-           $company= array('product_id' => $request->id, 'product_code' => $value->product_code, 'product_quantity' => 0 ,'product_seal_price'=>0);
-        }
-        return Response()->json($company);
+        $data['product'] = Product::all();
+        $data['customer'] = CustomerRegisteration::all();
+        return view('admin.returned_product.create_edit', $data);
     }
 
     /**
@@ -83,38 +79,53 @@ class ReturnedProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'customer_id'=>'required',
-            'customer_phone_no'=>'required',
-            'customer_CNiC'=>'required',
-            'product_id'=>'required',
-            'product_code'=>'required',
-            'product_seal_price'=>'required|integer',
-            'product_quantity'=>'required|integer',
-            'return_date_and_time'=>'required',
+            'customer_id' => 'required',
+            'customer_phone_no' => 'required',
+            'customer_CNiC' => 'required',
+            'return_date_and_time' => 'required',
         ]);
-        $companyId = $request->id;
-        $charges_amount=$request->delivery_charges*$request->product_quantity;
-        $total_bill=$request->product_quantity*$request->product_seal_price;
-        $total=$total_bill+$charges_amount;
-	    $company= ReturnedProduct::updateOrCreate(
-	    	        [
-	    	         'id' => $companyId
-	    	        ],
-	                [
-	                'customer_id' =>$request->customer_id,
-	                'customer_phone_no' =>$request->customer_phone_no,
-	                'customer_CNiC' =>$request->customer_CNiC,
-	                'product_id' =>$request->product_id,
-	                'product_code' => $request->product_code,
-	                'product_seal_price'=>$request->product_seal_price,
-	                'delivery_charges' => $request->delivery_charges,
-	                'charges_amount' => $charges_amount,
-	                'product_quantity' => $request->product_quantity,
-	                'return_date_and_time' => $request->return_date_and_time,
-	                'total_bill' => $total,
-	                ]);
+        // return $request;
+        $recordeId = $request->id;
+        $total = 0;
+        foreach ($request->data as $item) {
+            $total += $item['product_Sale_price'] * $item['receivedQuantity'];
+        }
+        ReturnedProduct::updateOrCreate(
+            [
+                'id' => $recordeId
+            ],
+            [
+                'customer_id' => $request->customer_id,
+                'customer_phone_no' => $request->customer_phone_no,
+                'customer_CNiC' => $request->customer_CNiC,
+                'return_date_and_time' => $request->return_date_and_time,
+                'returnTotalAmount' => $total,
+            ]
+        );
 
-	    return Response()->json($company);
+        if ($recordeId == null) {
+            $returnedProduct = ReturnedProduct::latest()->first();
+            $recordeId = $returnedProduct->id;
+        }
+        ReturnSaleProduct::where(['returnSP_id' => $recordeId, 'customer_id' => $request->customer_id])->delete();
+
+        foreach ($request->data as $item) {
+            ReturnSaleProduct::create([
+                'returnSP_id' => $recordeId,
+                'customer_id' => $request->customer_id,
+                'product_id' => $item['product_id'],
+                'product_code' => $item['product_code'],
+                'product_sale_price' => $item['product_Sale_price'],
+                'product_quantity' => $item['Sale_product_quantity'],
+                'receivedQuantity' => $item['receivedQuantity'],
+                'return_amount' => $item['receivedQuantity'] * $item['product_Sale_price']
+            ]);
+        }
+        $data['recorde']=$request;
+        $data['total']=$total;
+
+        return view('admin.returned_product._bill',$data);
+        // return redirect()->route('admin.returned_product.index');
     }
 
     /**
@@ -125,8 +136,7 @@ class ReturnedProductController extends Controller
      */
     public function show(Request $request)
     {
-        // $company=CustomerRegisteration::find($request->id);
-        $company=Seal::where('customer_id',$request->id)->firstOrFail();
+        $company = Sale::where('customer_id', $request->id)->firstOrFail();
         return Response()->json($company);
     }
 
@@ -138,10 +148,12 @@ class ReturnedProductController extends Controller
      */
     public function edit(Request $request)
     {
-        $where = array('id' => $request->id);
-	    $company  = ReturnedProduct::where($where)->first();
-
-	    return Response()->json($company);
+        $data['recode']= ReturnedProduct::where('id',$request->id)->first();
+        $where = array('returnSP_id' => $request->id);
+        $data['recodes']  = ReturnSaleProduct::where($where)->get();
+        $data['product'] = Product::all();
+        $data['customer'] = CustomerRegisteration::all();
+        return view('admin.returned_product.create_edit',$data);
     }
     /**
      * Update the specified resource in storage.
@@ -163,8 +175,10 @@ class ReturnedProductController extends Controller
      */
     public function destroy(Request $request)
     {
-        $company = ReturnedProduct::where('id',$request->id)->delete();
-
-	    return Response()->json($company);
+         ReturnedProduct::where('id', $request->id)->delete();
+         $where = array('returnSP_id' => $request->id);
+         ReturnSaleProduct::where($where)->delete();
+         $message='Recode Successfuly Deleted!';
+        return Response()->json($message);
     }
 }

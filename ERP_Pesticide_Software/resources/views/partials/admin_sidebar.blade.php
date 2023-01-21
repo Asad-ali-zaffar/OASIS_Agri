@@ -51,13 +51,13 @@
                         <p>{{ __('Employees Registration') }}</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="
                     {{ route('admin.expenses.index') }}" class="nav-link" id="expenses">
                         <i class="far fa-circle nav-icon"></i>
                         <p>{{ __('Expenses Registration') }}</p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="
                     {{ route('admin.salary_pays.index') }}" class="nav-link"
@@ -66,14 +66,14 @@
                         <p>{{ __('Salary/Pays Registration') }}</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="
                     {{ route('admin.policies.index') }}" class="nav-link"
                         id="policies">
                         <i class="far fa-circle nav-icon"></i>
                         <p>{{ __('Policies Registration') }}</p>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </li>
         <li class="nav-item has-treeview" id="prices">
@@ -92,7 +92,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.Sale.index') }}" class="nav-link" id="Seal">
+                    <a href="{{ route('admin.sale.index') }}" class="nav-link" id="sale">
                         <i class="far fa-circle nav-icon"></i>
                         <p>{{ __('Sale Product') }}</p>
                     </a>
@@ -103,12 +103,12 @@
                         <p>{{ __('Returned Product Registration') }}</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('admin.buy_policies.index') }}" class="nav-link" id="buy_policies">
                         <i class="far fa-circle nav-icon"></i>
                         <p>{{ __('Buy Policies') }}</p>
                     </a>
-                </li>
+                </li> --}}
 
             </ul>
         </li>
@@ -127,7 +127,7 @@
                         <p>{{ __('Product Stock') }}</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('admin.consumed_sale_product.index') }}" class="nav-link" id="consumed_sale_product">
                         <i class="far fa-circle nav-icon"></i>
                         <p>{{ __('Consumed / Sale Product') }}</p>
@@ -138,10 +138,10 @@
                         <i class="far fa-circle nav-icon"></i>
                         <p>{{ __('Returned Product') }}</p>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </li>
-        <li class="nav-item has-treeview" id="prices">
+        {{-- <li class="nav-item has-treeview" id="prices">
             <a href="#" class="nav-link" id="prices_link">
                 <i class="nav-icon fas fa-list"></i>
                 <p>
@@ -163,6 +163,6 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
     </ul>
 </nav>

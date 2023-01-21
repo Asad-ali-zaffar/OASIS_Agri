@@ -13,9 +13,9 @@
     </form>
 @endcan --}}
 
-<a href="javascript:void(0)" data-toggle="tooltip" onClick="editFunc({{ $patient->purchases_id }})" data-original-title="Edit" class="edit btn btn-outline-secondary ">
+<a href="{{route('admin.purchase.edit',$patient->id)}}" data-toggle="tooltip" onClick="editFunc()" data-original-title="Edit" class="edit btn btn-outline-secondary ">
     Edit
     </a>
-    <a href="javascript:void(0);" id="delete-compnay" onClick="deleteFunc({{ $patient->purchases_id }})" data-toggle="tooltip" data-original-title="Delete" class="delete btn btn-outline-danger">
+    <a href="javascript:void(0);" id="delete-compnay" onClick="deleteFunc({{ $patient->id }})" data-toggle="tooltip" data-original-title="Delete" class="delete btn btn-outline-danger">
     Delete
     </a>

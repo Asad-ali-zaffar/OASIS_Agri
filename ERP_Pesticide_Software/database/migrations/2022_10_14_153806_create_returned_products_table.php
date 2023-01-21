@@ -16,16 +16,10 @@ return new class extends Migration
         Schema::create('returned_products', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('customer_id');
-            $table->bigInteger('customer_phone_no');
-            $table->bigInteger('customer_CNiC');
-            $table->bigInteger('product_id');
-            $table->bigInteger('product_code');
-            $table->bigInteger('product_seal_price');
-            $table->bigInteger('delivery_charges')->nullable();
-            $table->bigInteger('charges_amount')->nullable();
-            $table->bigInteger('product_quantity');
+            $table->string('customer_phone_no');
+            $table->string('customer_CNiC');
+            $table->float('returnTotalAmount')->nullable();
             $table->dateTime('return_date_and_time');
-            $table->bigInteger('total_bill')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -13,9 +13,11 @@
     </form>
 @endcan --}}
 
-<a href="javascript:void(0)" data-toggle="tooltip" onClick="editFunc({{ $patient->return_id }})" data-original-title="Edit" class="edit btn btn-outline-secondary ">
+{{-- <a href="{{route('admin.returned_product.edit',$patient->return_id)}}" data-toggle="tooltip" onClick="editFunc({{ $patient->return_id }})" data-original-title="Edit" class="edit btn btn-outline-secondary "> --}}
+<a href="{{route('admin.returned_product.edit',$patient->id)}}" data-toggle="tooltip"  data-original-title="Edit" class="edit btn btn-outline-secondary ">
     Edit
     </a>
-    <a href="javascript:void(0);" id="delete-compnay" onClick="deleteFunc({{ $patient->return_id }})" data-toggle="tooltip" data-original-title="Delete" class="delete btn btn-outline-danger">
+    {{-- <a href="javascript:void(0);" id="delete-compnay" onClick="deleteFunc({{ $patient->return_id }})" data-toggle="tooltip" data-original-title="Delete" class="delete btn btn-outline-danger"> --}}
+    <a href="javascript:void(0);" id="delete-compnay" onClick="deleteFunc({{ $patient->id }})" data-toggle="tooltip" data-original-title="Delete" class="delete btn btn-outline-danger">
     Delete
     </a>

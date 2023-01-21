@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Purchase,Product};
+use App\Models\{Purchase, Product, PurchasesProducts};
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Excel;
@@ -18,26 +18,23 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $data['product']=Product::all();
-        if(request()->ajax()) {
-            $getData =Purchase::select('*','products.product_name as product_name','purchases.id as purchases_id')
-          ->join('products', 'products.id', '=', 'purchases.product_id','left')
-            ->get();
-            //
-       //     DB::table('product_method_entries')
-       // ->join('tests', 'tests.id', '=', 'product_method_entries.test_id','left')
-       //     ->select('product_method_entries.*','tests.name as test_name_eng', DB::raw('(CASE
-       // WHEN product_method_entries.status = 0 THEN "In-Active"
-       // WHEN product_method_entries.status = 1 THEN "Active"
-       // WHEN product_method_entries.status = 2 THEN "Suspend"
-       // ELSE "Close" END) AS status'))->get();
-           return DataTables::of($getData)
-           ->addColumn('action', function ($patient) {
-               return view('admin.purchase._action', compact('patient'));
-           })->make(true);
-       }
-       return view('admin.purchase.index',compact('data'));
-
+        $data['product'] = Product::all();
+        if (request()->ajax()) {
+            $getData = Purchase::all();
+            // $getData = PurchasesProducts::select('*','purchases.id as purchases_id')
+            // ->join('purchases', 'purchases.id', '=', 'purchases_products.purchaese_id')
+            // ->join('products', 'products.id', '=', 'purchases_products.product_id')
+            // ->get();
+            return DataTables::of($getData)
+                ->addColumn('action', function ($patient) {
+                    return view('admin.purchase._action', compact('patient'));
+                })
+                ->addColumn('purchaseProducts', function ($patient) {
+                    return get_purchaseProducts($patient->id);
+                })
+                ->make(true);
+        }
+        return view('admin.purchase.index', compact('data'));
     }
 
     /**
@@ -47,9 +44,12 @@ class PurchaseController extends Controller
      */
     public function create(Request $request)
     {
-
-        $company=Product::find($request->id);
-        return Response()->json($company);
+        if ($request->ajax()) {
+            $company = Product::find($request->id);
+            return Response()->json($company);
+        }
+        $data['product'] = Product::all();
+        return view('admin.purchase.create', $data);
     }
 
     /**
@@ -60,32 +60,41 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-
-        $request->validate([
-            'product_id'=>'required',
-            'product_code'=>'required',
-            'purchasing_price'=>'required|integer',
-            'sealing_price'=>'required|integer',
-            'expiry_date'=>'required|date',
-            'purchasing_expense'=>'required|integer',
-            'product_quantity'=>'required|integer',
-        ]);
-        $companyId = $request->id;
-
-	    $company   =   Purchase::updateOrCreate(
-	    	        [
-	    	         'id' => $companyId
-	    	        ],
-	                [
-	                'product_id' =>$request->product_id,
-	                'product_code' => $request->product_code,
-	                'purchasing_price' => $request->purchasing_price,
-	                'sealing_price' => $request->sealing_price,
-	                'expiry_date' => $request->expiry_date,
-	                'purchasing_expense' => $request->purchasing_expense,
-	                'product_quantity' => $request->product_quantity
-	                ]);
-	    return Response()->json($company);
+        $recordeId = $request->id;
+        $total_bill = 0;
+        foreach ($request->data as $item) {
+            $total_bill += $item['product_quantity'] * $item['purchasing_price'];
+        }
+        Purchase::updateOrCreate(
+            [
+                'id' => $recordeId
+            ],
+            [
+                'purchasing_expense' => $request->purchasing_expense,
+                'total_amount' => $total_bill,
+            ]
+        );
+        if ($recordeId == null) {
+            $purchase = Purchase::latest()->first();
+            $recordeId = $purchase->id;
+        }
+        PurchasesProducts::where(['purchaese_id' => $recordeId])->delete();
+        // return $request;
+        foreach ($request->data as $item) {
+            PurchasesProducts::create([
+                'purchaese_id' => $recordeId,
+                'product_id' => $item['product_id'],
+                'product_code' => $item['product_code'],
+                'purchasing_price' => $item['purchasing_price'],
+                'saleing_price' => $item['sale_price'],
+                'expiry_date' => $item['expiry_date'],
+                'product_quantity' => $item['product_quantity'],
+            ]);
+        }
+        $data['recorde'] = $request;
+        $data['total_amount']=$total_bill;
+        return view('admin.purchase._bill', $data);
+        // return redirect()->route('admin.purchase.index');
     }
 
     /**
@@ -96,7 +105,6 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
-
     }
 
     /**
@@ -105,12 +113,15 @@ class PurchaseController extends Controller
      * @param  \App\Models\Purchase  $purchase
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit(Request $request,$id =null)
     {
-        $where = array('id' => $request->id);
-	    $company  = Purchase::where($where)->first();
 
-	    return Response()->json($company);
+        $where = array('purchaese_id' => $id);
+        $data['purchaserecorde']  = PurchasesProducts::where($where)->get();
+        $data['recorde']  = Purchase::findOrFail($id);
+        $data['product'] = Product::all();
+        return view('admin.purchase.create', $data);
+
     }
 
     /**
@@ -133,8 +144,10 @@ class PurchaseController extends Controller
      */
     public function destroy(Request $request)
     {
-        $company = Purchase::where('id',$request->id)->delete();
 
-	    return Response()->json($company);
+        $where = array('purchaese_id' => $request->id);
+        $data['purchaserecorde']  = PurchasesProducts::where($where)->delete();
+        $company = Purchase::where('id', $request->id)->delete();
+        return Response()->json($company);
     }
 }

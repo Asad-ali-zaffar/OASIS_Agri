@@ -15,13 +15,7 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
-            $table->integer('product_code');
-            $table->integer('purchasing_price');
-            $table->integer('sealing_price');
-            $table->date('expiry_date');
             $table->integer('purchasing_expense');
-            $table->integer('product_quantity');
             $table->softDeletes();
             $table->timestamps();
         });

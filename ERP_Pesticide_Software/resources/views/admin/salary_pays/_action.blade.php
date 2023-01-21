@@ -12,11 +12,26 @@
         </button>
     </form>
 @endcan --}}
+<div class="dropdown open">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="triggerId">
+        <a href="javascript:void(0)" data-toggle="tooltip" onClick="editFunc({{ $patient->pay_id }})"
+            data-original-title="Edit" class="edit btn btn-outline-primary ml-4 mt-2">
+            <i class="fa fa-edit" aria-hidden="true"></i> Edit
+        </a>
+        <a href="javascript:void(0);" id="delete-compnay" onClick="deleteFunc({{ $patient->pay_id }})"
+            data-toggle="tooltip" data-original-title="Delete" class=" delete btn btn-outline-danger ml-4 mt-2">
+           <i class="fa fa-trash" aria-hidden="true"></i> Delete
+        </a>
+        <a href="{{route('admin.salary_pays.print',$patient->pay_id)}}" id="print_invoice"
+            data-toggle="tooltip" data-original-title="Print Invoice"
+            class="ptint btn btn-outline-warning ml-4 mt-2">
+            <i class="fa fa-print" aria-hidden="true"></i> Print
+        </a>
+    </div>
+</div>
 
-<a href="javascript:void(0)" data-toggle="tooltip" onClick="editFunc({{ $patient->pay_id }})" data-original-title="Edit" class="edit btn btn-outline-secondary ">
-    Edit
-    </a>
-    &nbsp;&nbsp;
-    <a href="javascript:void(0);" id="delete-compnay" onClick="deleteFunc({{ $patient->pay_id }})" data-toggle="tooltip" data-original-title="Delete" class="delete btn btn-outline-danger">
-    Delete
-    </a>
+&nbsp;&nbsp;

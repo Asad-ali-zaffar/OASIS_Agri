@@ -1169,7 +1169,7 @@ exports.default = {
    * but if null it will be always recalculated.
    *
    * Note that the ending 'a' of the format meaning "alpha" has currently no effect, meaning that rgb is the same as
-   * rgba excepting if the alpha channel is disabled (see useAlpha).
+   * rgba excepting if the alpha channel is disabled (see uSalepha).
    *
    * @type {('rgb'|'hex'|'hsl'|'auto'|null)}
    * @default 'auto'
@@ -1269,7 +1269,7 @@ exports.default = {
    * @type {boolean}
    * @default true
    */
-  useAlpha: true,
+  uSalepha: true,
   /**
    * Colorpicker widget template
    * @type {String}
@@ -5915,14 +5915,14 @@ var ColorHandler = function () {
     }
 
     /**
-     * Returns true if the useAlpha option is exactly true, false otherwise
+     * Returns true if the uSalepha option is exactly true, false otherwise
      * @returns {boolean}
      */
 
   }, {
     key: 'isAlphaEnabled',
     value: function isAlphaEnabled() {
-      return this.colorpicker.options.useAlpha !== false;
+      return this.colorpicker.options.uSalepha !== false;
     }
 
     /**
@@ -6057,10 +6057,10 @@ var PickerHandler = function () {
       }
 
       if (this._supportsAlphaBar()) {
-        this.options.useAlpha = true;
+        this.options.uSalepha = true;
         picker.addClass('colorpicker-with-alpha');
       } else {
-        this.options.useAlpha = false;
+        this.options.uSalepha = false;
       }
     }
   }, {
@@ -6081,7 +6081,7 @@ var PickerHandler = function () {
   }, {
     key: '_supportsAlphaBar',
     value: function _supportsAlphaBar() {
-      return (this.options.useAlpha || this.colorpicker.colorHandler.hasColor() && this.color.hasTransparency()) && this.options.useAlpha !== false && (!this.options.format || this.options.format && !this.options.format.match(/^hex([36])?$/i));
+      return (this.options.uSalepha || this.colorpicker.colorHandler.hasColor() && this.color.hasTransparency()) && this.options.uSalepha !== false && (!this.options.format || this.options.format && !this.options.format.match(/^hex([36])?$/i));
     }
 
     /**
