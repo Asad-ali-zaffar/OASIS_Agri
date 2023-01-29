@@ -56,6 +56,7 @@
 <link rel="stylesheet" href="{{ url('plugins/sweetalert2/sweetalert2.min.css') }}">
 <link rel="stylesheet" href="{{ url('css/custom_css.css') }}">
 
+
 <!--ajax and datatable link -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">

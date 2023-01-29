@@ -190,7 +190,7 @@
                                             </div>
                                             <div class="col-lg-2 p-2">
                                                 <div class="form-group">
-                                                    <label class="col-sm-6 control-label">Sale Price </label>
+                                                    <label class="col-sm-12 control-label">Sale Price </label>
                                                     <div class="col-sm-12">
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
