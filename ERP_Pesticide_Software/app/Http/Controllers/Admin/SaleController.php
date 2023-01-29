@@ -30,12 +30,12 @@ class SaleController extends Controller
         $data['customer'] = CustomerRegisteration::all();
         $data['policies'] = Policies::all();
         if (request()->ajax()) {
-            $getData = Sale::select('*', 'sales.id as sale_id', 'customer_registerations.customer_name as customer_name')
-                ->join('customer_registerations', 'customer_registerations.id', '=', 'sales.customer_id', 'left')
+             $getData = Sale::select('*', 'sales.id as sale_id', 'customer_registerations.customer_name as customer_name')
+                ->join('customer_registerations', 'customer_registerations.id', '=', 'sales.customer_id')
                 ->get();
             return DataTables::of($getData)
                 ->addColumn('sales_product', function ($patient) {
-                    return get_saleProductesRecordes($patient->id,$patient->customer_id);
+                    return get_saleProductesRecordes($patient->sale_id,$patient->customer_id);
                 })
                 ->addColumn('action', function ($patient) {
                     return view('admin.sale._action', compact('patient'));

@@ -6,7 +6,7 @@
     $customer=get_customer($recorde->customer_id)->customer_name;
     $product=get_product($recorde->data[0]['product_id']);
     @endphp
-    <title>{{get_customer($recorde->customer_id)->customer_name}} | Ledger Invoice</title>
+    <title>{{get_customer($recorde->customer_id)->customer_name}} | Sales Invoice</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -136,7 +136,7 @@
                                 {{-- @dd($recorde->data) --}}
                                 @foreach ($recorde->data as $key=>$value)
                                     <tr class="border">
-                                        <td>{{ $value['product_id'] }}</td>
+                                        <td>{{ get_product($value['product_id'] )->product_name }}</td>
                                         <td>{{ $value['product_quantity'] }}</td>
                                         <td>{{ number_format($value['product_Sale_price']) }}</td>
                                         @php

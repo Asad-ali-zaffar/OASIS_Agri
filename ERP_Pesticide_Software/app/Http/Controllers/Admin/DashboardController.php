@@ -104,7 +104,7 @@ class DashboardController extends Controller
             $productchart =  (new LarapexChart)->setType('polarArea')
             ->setTitle('Product ')
             ->setSubtitle('Active and In-Active Chart')
-            ->setDataset([$productcount,0])
+            ->setDataset([10,20])
             ->setLabels(['Active Product', 'In-Active Product'])
             ->setColors([ '#03A9F4','#D32F2F']);
             return view('dashboard',compact('data','purchasechart','salechart','coustomerchart','empchart','productchart'));
